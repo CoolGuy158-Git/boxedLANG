@@ -2,11 +2,14 @@ box usr|sandisk
 box pwd|1234
 
 ask username
-aks password
+ask password
 
-test usr|$username|==|$usr|true|false
-test pwd|$password|==|$pwd|true|false
-say $usr~$pwd
-del usr 
-del pwd
-jump 1
+
+test usr|$username|$usr|==|1|0
+test pwd|$password|$pwd|==|1|0
+
+math login|$usr|$pwd|+
+
+test loggedin|$login|2|==|Access~Granted|Access~Denied
+
+say $loggedin

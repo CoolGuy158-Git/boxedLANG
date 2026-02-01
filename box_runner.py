@@ -32,7 +32,7 @@ def run_boxed_code(boxed_code):
 		boxes = {}
 		l = -1
 		marks = {}
-		while l < len(boxed_code):
+		while l < len(boxed_code)-1:
 			l = l + 1
 			cur_line = boxed_code[l]
 			args = cur_line['args']
@@ -53,13 +53,37 @@ def run_boxed_code(boxed_code):
 					del boxes[get_arg(0, args, boxes)]
 
 				case "test":
-					output = eval(get_arg(1, args, boxes) + get_arg(2, args, boxes) + get_arg(3, args, boxes))
-					if output == True:
-						output = get_arg(4, args, boxes)
-					else:
-						output = get_arg(5, args, boxes)
-					boxes = boxes | {get_arg(0, args, boxes): str(output)}
-
+					match get_arg(3, args, boxes):
+						case "==":
+							if get_arg(1, args, boxes) == get_arg(2, args, boxes):
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
+							else:
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
+						case "!=":
+							if get_arg(1, args, boxes) != get_arg(2, args, boxes):
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
+							else:
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
+						case ">":
+							if float(get_arg(1, args, boxes)) > float(get_arg(2, args, boxes)):
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
+							else:
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
+						case "<":
+							if float(get_arg(1, args, boxes)) < float(get_arg(2, args, boxes)):
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
+							else:
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
+						case ">=":
+							if float(get_arg(1, args, boxes)) >= float(get_arg(2, args, boxes)):
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
+							else:
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
+						case "<=":
+							if float(get_arg(1, args, boxes)) <= float(get_arg(2, args, boxes)):
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
+							else:
+								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
 				case "math":
 					boxes = boxes | {get_arg(0, args, boxes): str(eval(get_arg(1, args, boxes) + get_arg(3, args, boxes) + get_arg(2, args, boxes)))}
 
