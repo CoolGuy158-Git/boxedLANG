@@ -18,3 +18,13 @@ Extract the ZIP and open the folder
 ### 🛠 Requirements
 
 Python 3.x installed
+
+# ▶️ How to Use
+Run boxedLANG Code
+```sh
+python box_runner.py path/to/file.bx
+```
+Example:
+```sh
+python box_runner.py test.bx
+```
