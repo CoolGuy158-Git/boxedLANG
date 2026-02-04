@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boxrun"
+version = "0.0.1"
+
+[project.scripts]
+boxrun = "boxrun.main:main"

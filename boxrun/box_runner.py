@@ -1,16 +1,15 @@
-import pathlib 
-from os.path import expanduser
+import pathlib as file
+import os.path
 from colorama import Fore, Back, Style
 import time
 import sys
-import boxcode.boxrun.box_to_json as bx2json
+import box_to_json as bx2json
 
 boxes = {}
 marks = {}
 l = -1
 
-CODE = pathlib.Path(expanduser(sys.argv[1])).read_text()
-CODE = bx2json.mk(CODE)
+CODE = file.Path(os.path.expanduser(sys.argv[1])).resolve().read_text()
 
 def get_arg(argnumb, args,boxes):
 	try:
@@ -123,6 +122,7 @@ def handle_command(command):
 
 
 def run_boxed_code(boxed_code):
+	boxed_code = bx2json.mk(boxed_code)
 	global boxes
 	global marks
 	global l
@@ -131,5 +131,7 @@ def run_boxed_code(boxed_code):
 		cur_line = boxed_code[l]
 		handle_command(cur_line)
 
-print(Back.BLUE + Fore.GREEN + "RUNNING " + sys.argv[1] + Style.RESET_ALL)
-run_boxed_code(CODE)
+
+if __name__ == "__main__":
+	print(Back.BLUE + Fore.GREEN + "RUNNING " + sys.argv[1] + Style.RESET_ALL)
+	run_boxed_code(CODE)
