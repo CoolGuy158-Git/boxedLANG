@@ -24,6 +24,44 @@ def get_arg(argnumb, args,boxes):
 	except IndexError:
 			arg = ""
 	return arg
+
+def test(arg1,arg2,op):
+	match op:
+						case "==":
+							if arg1 == arg2:								
+								return True
+							else:
+								return False
+						case "!=":
+							if arg1 != arg2:
+								return True
+							else:
+								return False
+						case ">":
+							if float(arg1) > float(arg2):
+								return True
+							else:
+								return False
+						case "<":
+							if float(arg1) < float(arg2):								
+								return True
+							else:
+								return False
+						case ">=":
+							if float(arg1) >= float(arg2):
+								return True
+							else:
+								return False
+						case "<=":
+							if float(arg1) <= float(arg2):
+								return True
+							else:
+								return False	
+						case "<=":
+							if float(arg1) <= float(arg2):
+								return True
+							else:
+								return False
 		
 def handle_command(command):
 	global boxes
@@ -44,37 +82,10 @@ def handle_command(command):
 				case "del":
 					del boxes[get_arg(0, args, boxes)]
 				case "test":
-					match get_arg(3, args, boxes):
-						case "==":
-							if get_arg(1, args, boxes) == get_arg(2, args, boxes):								
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
-							else:
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
-						case "!=":
-							if get_arg(1, args, boxes) != get_arg(2, args, boxes):
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
-							else:
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
-						case ">":
-							if float(get_arg(1, args, boxes)) > float(get_arg(2, args, boxes)):
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
-							else:
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
-						case "<":
-							if float(get_arg(1, args, boxes)) < float(get_arg(2, args, boxes)):								
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
-							else:
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
-						case ">=":
-							if float(get_arg(1, args, boxes)) >= float(get_arg(2, args, boxes)):
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
-							else:
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
-						case "<=":
-							if float(get_arg(1, args, boxes)) <= float(get_arg(2, args, boxes)):
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
-							else:
-								boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
+					if test(get_arg(0, args, boxes), get_arg(1, args, boxes), get_arg(3, args, boxes)) == True:
+						boxes = boxes | {get_arg(0, args, boxes): get_arg(4, args, boxes)}
+					else:
+						boxes = boxes | {get_arg(0, args, boxes): get_arg(5, args, boxes)}
 				case "math":
 					boxes = boxes | {get_arg(0, args, boxes): str(eval(get_arg(1, args, boxes) + get_arg(3, args, boxes) + get_arg(2, args, boxes)))}
 				case "wait":
@@ -87,26 +98,7 @@ def handle_command(command):
 					else:
 						l = int(get_arg(0, args, boxes)) - 1
 				case "if":
-					run = False
-					match get_arg(1, args, boxes):
-						case "==":
-							if get_arg(0, args, boxes) == get_arg(2, args, boxes):								
-								run = True
-						case "!=":
-							if get_arg(0, args, boxes) != get_arg(2, args, boxes):
-								run = True
-						case ">":
-							if float(get_arg(0, args, boxes)) > float(get_arg(2, args, boxes)):
-								run = True
-						case "<":
-							if float(get_arg(0, args, boxes)) < float(get_arg(2, args, boxes)):
-								run = True
-						case ">=":
-							if float(get_arg(0, args, boxes)) >= float(get_arg(2, args, boxes)):
-								run = True
-						case "<=":
-							if float(get_arg(0, args, boxes)) <= float(get_arg(2, args, boxes)):
-								run = True
+					run = test(get_arg(0, args, boxes), get_arg(2, args, boxes), get_arg(1, args, boxes))
 					if run == True:
 						cm_torn = get_arg(3, args, boxes) + " "
 						i = 3
@@ -116,26 +108,7 @@ def handle_command(command):
 						cm_torn = bx2json.mk(cm_torn)[1]
 						handle_command(cm_torn)
 				case "jumpif":
-					jump = False
-					match get_arg(1, args, boxes):
-						case "==":
-							if get_arg(0, args, boxes) == get_arg(2, args, boxes):								
-								jump = True
-						case "!=":
-							if get_arg(0, args, boxes) != get_arg(2, args, boxes):
-								jump = True
-						case ">":
-							if float(get_arg(0, args, boxes)) > float(get_arg(2, args, boxes)):
-								jump = True
-						case "<":
-							if float(get_arg(0, args, boxes)) < float(get_arg(2, args, boxes)):
-								jump = True
-						case ">=":
-							if float(get_arg(0, args, boxes)) >= float(get_arg(2, args, boxes)):
-								jump = True
-						case "<=":
-							if float(get_arg(0, args, boxes)) <= float(get_arg(2, args, boxes)):
-								jump = True
+					jump = test(get_arg(0, args, boxes), get_arg(2, args, boxes), get_arg(1, args, boxes))
 					if jump == True:
 						if get_arg(4, args, boxes) == "m":
 							l = marks[get_arg(3, args, boxes)]
