@@ -3,7 +3,7 @@ import os.path
 from colorama import Fore, Back, Style
 import time
 import sys
-import box_to_json as bx2json
+from . box_to_json import mk
 
 boxes = {}
 marks = {}
@@ -122,7 +122,7 @@ def handle_command(command):
 
 
 def run_boxed_code(boxed_code):
-	boxed_code = bx2json.mk(boxed_code)
+	boxed_code = mk(boxed_code)
 	global boxes
 	global marks
 	global l

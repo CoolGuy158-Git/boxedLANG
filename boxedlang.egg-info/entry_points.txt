@@ -1,0 +1,2 @@
+[console_scripts]
+boxrun = boxrun.main:main
