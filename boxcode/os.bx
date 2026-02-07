@@ -1,7 +1,7 @@
 say booting~boxed-os|0
 jump boot|m
 
-premark calc
+premark calc //calculator app
 ask #1
 ask op
 ask #2
@@ -9,25 +9,24 @@ math calc|$#1|$#2|$op
 say $calc|0
 jump boot|m
 
-premark note
+premark note //note app
 ask wright(w)/read(r)~?
 jump notes-:$?|m
-premark notes-w
+premark notes-w //wright a note
 ask note~name
 ask note
-box $name|$note
+box notes-:$name|$note
 jump boot|m
-
-premark notes-r
+premark notes-r //read a note
 ask name
-say $name|0
-say $$name|0
+say notes-:$name|0
+say $notes-:$name|0
 jump boot|m
 
-premark end
+premark end //end app
 end now
 
-premark boot
+premark boot 
 ask name~of~app
 jump $app|m
 jump boot|m
