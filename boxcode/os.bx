@@ -1,7 +1,8 @@
 say booting~boxed-os|0
-jump boot|m
+ask login
+jump filesys-setup|m
 
-premark calc //calculator app
+premark app-calc //calculator app
 ask #1
 ask op
 ask #2
@@ -9,7 +10,7 @@ math calc|$#1|$#2|$op
 say $calc|0
 jump boot|m
 
-premark note //note app
+premark app-note //note app
 ask wright(w)/read(r)~?
 jump notes-:$?|m
 premark notes-w //wright a note
@@ -23,10 +24,18 @@ say $name|0
 say $$name|0
 jump boot|m
 
+premark app-files
+jump boot|m
+
 premark end //end app
 end now
 
 premark boot 
 ask name~of~app
-jump $app|m
+jump app-$app|m
 jump boot|m
+
+premark filesys-setup
+box file-usr|$login
+jump boot|m
+
