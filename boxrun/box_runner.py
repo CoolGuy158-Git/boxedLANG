@@ -15,14 +15,12 @@ def get_arg(argnumb, args,boxes):
 	try:
 		arg = args[argnumb]
 		for i in range(0, arg.count("$")):
-			cur_box = arg.split("$")[arg.count("$") - 2]
-			print("cur_box : " + cur_box)
+			cur_box = arg.split("$")[arg.count("$")]
 			if "~" in cur_box:
 				cur_box = cur_box.split("~")[0]
 			if ":" in cur_box:
 				cur_box = cur_box.split(":")[0]
 			arg = arg.replace("$" + cur_box, boxes[cur_box])
-			print(arg)
 		arg = arg.replace("~", " ")
 		arg = arg.replace(":", "")
 	except IndexError:
