@@ -1,4 +1,4 @@
-say booting~boxed-os|0
+say booting~boxed-os|1
 ask login
 jump filesys-setup|m
 
@@ -65,4 +65,3 @@ jump boot|m
 premark filesys-setup
 box file-usr|$login
 jump boot|m
-
