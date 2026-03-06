@@ -171,13 +171,3 @@ def start_boxed_code(boxed_code, name):
 	run_boxed_code(boxed_code)
 
 
-if __name__ == "__main__":
-	import argparse
-	parser = argparse.ArgumentParser(description="boxedLANG interpreter")
-	parser.add_argument("file", help="path to the boxedLANG source file to run")
-	args = parser.parse_args()
-	CODE = file.Path(os.path.expanduser(args.file)).resolve().read_text()
-	try:
-		start_boxed_code(CODE, args.file)
-	except KeyboardInterrupt:
-		print("KeyboardInterrupt by user")
