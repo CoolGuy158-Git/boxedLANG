@@ -89,7 +89,7 @@ def handle_command(command):
 					boxes = boxes | {get_arg(0, args, boxes): get_arg(1, args, boxes)}
 				case "say" | "s":
 					print(str(get_arg(0, args, boxes)))
-					if len(args) > 1:
+					if len(args) > 1 and type(get_arg(1, args, boxes) == "number"):
 						time.sleep(float(get_arg(1, args, boxes)))
 				case "ask" | "a":
 					temp = get_arg(0, args, boxes).split(" ")
