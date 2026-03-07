@@ -38,8 +38,7 @@ premark notes-r //read a note
 ask name
 box name|note-:$name
 say |0
-say $name|0
-say --------------|0
+say -----------:$name:-----------|0
 say $$name|0
 say |0
 jump boot|m
@@ -54,8 +53,7 @@ premark files-r
 ask name
 box name|file-:$name
 say |0
-say $name|0
-say --------------|0
+say -----------:$name:-----------|0
 say $$name|0
 say |0
 jump boot|m

@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-boxrun = "boxrun.main:main"
+boxrun = "boxrun.box_runner:main"
 
 [tool.setuptools]
 packages = ["boxrun"]

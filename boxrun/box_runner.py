@@ -4,6 +4,7 @@ from colorama import Fore, Back, Style
 import time
 import sys
 from . box_to_json import mk, undo_mk
+import argparse
 
 boxes = {}
 marks = {}
@@ -171,3 +172,10 @@ def start_boxed_code(boxed_code, name):
 	run_boxed_code(boxed_code)
 
 
+parser = argparse.ArgumentParser(description="boxedLANG interpreter")
+parser.add_argument("file", help="path to the boxedLANG source file to run")
+args = parser.parse_args()
+
+def main():
+    CODE = str(file.Path(os.path.expanduser(args.file)).read_text())
+    start_boxed_code(CODE, args.file)
