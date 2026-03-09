@@ -29,9 +29,9 @@ class BoxedVM:
     def _vm_recv(self):
         # VM checks its mailbox, waits if nothing is there yet
         return self.inbox.get()
-    def _run(self, code):
+    def _run(self, code, name):
 		gloabl self
-		run_boxed_code(code)
+		run_boxed_code(code, name)
 
 boxes = {}
 marks = {}
@@ -197,12 +197,3 @@ def run_boxed_code(boxed_code):
 def start_boxed_code(boxed_code, name):
 	print(Back.BLUE + Fore.GREEN + "RUNNING " + name + Style.RESET_ALL)
 	run_boxed_code(boxed_code)
-
-
-parser = argparse.ArgumentParser(description="boxedLANG interpreter")
-parser.add_argument("file", help="path to the boxedLANG source file to run")
-args = parser.parse_args()
-
-def main():
-    CODE = str(file.Path(os.path.expanduser(args.file)).read_text())
-    start_boxed_code(CODE, args.file)
