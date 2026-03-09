@@ -5,7 +5,7 @@ def pull_cmd_from(box_line, ln=0):
     cur_loop = 0
     global lpv
 
-    data = box_line.split(" ")
+    data = box_line.split(" ",maxsplit=1)
     cmd = data[0] #gets command from box standard
     length = len(data)
     args = data[length - 1].split("|") #splits args from box standerd
