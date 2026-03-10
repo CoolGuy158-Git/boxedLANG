@@ -3,7 +3,7 @@ import os.path
 from colorama import Fore, Back, Style
 import time
 import sys
-from . box_to_json import mk, undo_mk
+from box_to_json import mk, undo_mk
 import argparse
 
 import threading, queue
@@ -13,9 +13,9 @@ class BoxedVM:
         # Two mailboxes
         self.inbox  = queue.Queue()  # you → VM
         self.outbox = queue.Queue()  # VM → you    
-    def start(self, code):
+    def start(self, code, name):
         # Run the VM in the background so both sides work at once
-        t = threading.Thread(target=self._run, args=(code,), daemon=True)
+        t = threading.Thread(target=self._run, args=(code,name), daemon=True)
         t.start()
     def send(self, data):
         # YOU drop something in the VM's mailbox
@@ -30,8 +30,10 @@ class BoxedVM:
         # VM checks its mailbox, waits if nothing is there yet
         return self.inbox.get()
     def _run(self, code, name):
-		gloabl self
-		run_boxed_code(code, name)
+        print("run")
+        start_boxed_code(code, name)
+        self._vm_send({"end": "script"})
+
 
 boxes = {}
 marks = {}
@@ -117,11 +119,10 @@ def handle_command(command):
 					boxes = boxes | {get_arg(0, args, boxes): get_arg(1, args, boxes)}
 				case "say" | "s":
 					self._vm_send({"say": get_arg(0, args, boxes), "time": get_arg(1, args, boxes)})
-					if len(args) > 1 and type(get_arg(1, args, boxes) == "number"):
-						time.sleep(float(get_arg(1, args, boxes)))
 				case "ask" | "a":
 					temp = get_arg(0, args, boxes).split(" ")
-					boxes = boxes | {temp[len(temp)-1]: input(get_arg(0, args, boxes) + " : ")}
+					self._vm_send({"ask": get_arg(0, args, boxes)})
+					boxes = boxes | ({temp[len(temp)-1]: "fill here with bs" + " : "})
 				case "del" | "d":
 					del boxes[get_arg(0, args, boxes)]
 				case "test" | "t":
@@ -195,5 +196,6 @@ def run_boxed_code(boxed_code):
 		handle_command(cur_line)
 
 def start_boxed_code(boxed_code, name):
+	__init__()
 	print(Back.BLUE + Fore.GREEN + "RUNNING " + name + Style.RESET_ALL)
 	run_boxed_code(boxed_code)
