@@ -9,31 +9,31 @@ import argparse
 import threading, queue
 
 class BoxedVM:
-    global __init__
+	global __init__
 	def __init__(self):
-        # Two mailboxes
-        self.inbox  = queue.Queue()  # you → VM
-        self.outbox = queue.Queue()  # VM → you    
-    def start(self, code, name):
-        # Run the VM in the background so both sides work at once
-        t = threading.Thread(target=self._run, args=(code,name), daemon=True)
-        t.start()
-    def send(self, data):
-        # YOU drop something in the VM's mailbox
-        self.inbox.put(data)
-    def recv(self):
-        # YOU check your mailbox, waits if nothing is there yet
-        return self.outbox.get()
-    def _vm_send(self, data):
-        # VM drops something in YOUR mailbox
-        self.outbox.put(data)
-    def _vm_recv(self):
-        # VM checks its mailbox, waits if nothing is there yet
-        return self.inbox.get()
-    def _run(self, code, name):
-        print("run")
-        start_boxed_code(code, name)
-        self._vm_send({"end": "script"})
+		# Two mailboxes
+		self.inbox  = queue.Queue()  # you → VM
+		self.outbox = queue.Queue()  # VM → you
+	def start(self, code, name):
+		# Run the VM in the background so both sides work at once
+		t = threading.Thread(target=self._run, args=(code,name), daemon=True)
+		t.start()
+	def send(self, data):
+		# YOU drop something in the VM's mailbox
+		self.inbox.put(data)
+	def recv(self):
+		# YOU check your mailbox, waits if nothing is there yet
+		return self.outbox.get()
+	def _vm_send(self, data):
+		# VM drops something in YOUR mailbox
+		self.outbox.put(data)
+	def _vm_recv(self):
+		# VM checks its mailbox, waits if nothing is there yet
+		return self.inbox.get()
+	def _run(self, code, name):
+		print("run")
+		start_boxed_code(code, name)
+		self._vm_send({"end": "script"})
 
 
 boxes = {}
