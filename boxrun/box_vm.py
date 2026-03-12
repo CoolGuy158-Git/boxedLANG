@@ -10,10 +10,9 @@ import threading, queue
 
 class BoxedVM:
 	global __init__
-	def __init__(self):
-		# Two mailboxes
-		self.inbox  = queue.Queue()  # you → VM
-		self.outbox = queue.Queue()  # VM → you
+	def __init__(self, inbox = queue.Queue(), outbox = queue.Queue()):
+		self.inbox = inbox
+		self.outbox = outbox
 	def start(self, code, name):
 		# Run the VM in the background so both sides work at once
 		t = threading.Thread(target=self._run, args=(code,name), daemon=True)
