@@ -12,7 +12,7 @@ boxedLANG is a lightweight scripting language made by jamie designed for educati
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 
 ### Setup
 
