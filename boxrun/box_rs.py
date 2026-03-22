@@ -18,14 +18,14 @@ marks = {}
 line_index = -1
 
 
-class BoxedVM:
+class BoxedRS:
     def __init__(self, inbox=queue.Queue(), outbox=queue.Queue()):
         self.inbox = inbox
         self.outbox = outbox
 
     def start(self, code: str, name: str):
         """
-		Run the VM in the background so both sides work at once
+		Run the RS in the background so both sides work at once
 		
 		:param code: Code to run
 		:param name: Name of instance
@@ -45,7 +45,7 @@ class BoxedVM:
         """Check mailbox for data"""
         return self.outbox.get()
 
-    def _vm_send(self, data):
+    def _RS_send(self, data):
         """
         Sends data between mailboxes
         
@@ -53,14 +53,14 @@ class BoxedVM:
         """
         self.outbox.put(data)
 
-    def _vm_recv(self):
-        """Check for VM data"""
+    def _RS_recv(self):
+        """Check for RS data"""
         return self.inbox.get()
 
     def _run(self, code, name):
         print("run")
         start_boxed_code(code, name)
-        self._vm_send({"end": "script"})
+        self._RS_send({"end": "script"})
 
 
 def get_arg(argnumb, args, boxes):
@@ -161,12 +161,12 @@ def math(left: int, right: int, operator: str) -> int:
     return 0
 
 
-def handle_command(vm: BoxedVM, command: dict) -> None:
+def handle_command(RS: BoxedRS, command: dict) -> None:
     """
     Handle and execute given command
     
-    :param vm: BoxedVM instance
-    :type vm: BoxedVM
+    :param RS: BoxedRS instance
+    :type RS: BoxedRS
     :param command: Commands dictionary
     :type command: dict
     """
@@ -181,7 +181,7 @@ def handle_command(vm: BoxedVM, command: dict) -> None:
                     get_arg(0, args, boxes): get_arg(1, args, boxes)
                 }
             case "say" | "s":
-                vm._vm_send(
+                RS._RS_send(
                     {
                         "say": get_arg(0, args, boxes),
                         "time": get_arg(1, args, boxes)
@@ -189,7 +189,7 @@ def handle_command(vm: BoxedVM, command: dict) -> None:
                 )
             case "ask" | "a":
                 temp = get_arg(0, args, boxes).split(" ")
-                vm._vm_send({"ask": get_arg(0, args, boxes)})
+                RS._RS_send({"ask": get_arg(0, args, boxes)})
                 boxes = boxes | ({
                     temp[len(temp) - 1]: "fill here with bs" + " : "
                 })
@@ -242,7 +242,7 @@ def handle_command(vm: BoxedVM, command: dict) -> None:
                         i = i + 1
                         cm_torn = cm_torn + get_arg(i, args, boxes) + "|"
                     cm_torn = mk(cm_torn)[1]
-                    handle_command(vm, cm_torn)
+                    handle_command(RS, cm_torn)
             case "jumpif" | "ji":
                 jump = test(
                     get_arg(0, args, boxes),
@@ -287,12 +287,12 @@ def handle_command(vm: BoxedVM, command: dict) -> None:
         print("raw cmd : " + str(command) + Style.RESET_ALL)
 
 
-def run_boxed_code(vm: BoxedVM, boxed_code: list) -> None:
+def run_boxed_code(RS: BoxedRS, boxed_code: list) -> None:
     """
-    Runs given boxedLANG code in a VM
+    Runs given boxedLANG code in a RS
     
-    :param vm: boxedLANG VM instance
-    :type vm: BoxedVM
+    :param RS: boxedLANG RS instance
+    :type RS: BoxedRS
     :param boxed_code: Program to run
     :type boxed_code: list
     """
@@ -306,7 +306,7 @@ def run_boxed_code(vm: BoxedVM, boxed_code: list) -> None:
     while line_index < len(boxed_code) - 1:
         line_index += 1
         cur_line = boxed_code[line_index]
-        handle_command(vm, cur_line)
+        handle_command(RS, cur_line)
 
 
 def start_boxed_code(boxed_code: list, name: str) -> None:
@@ -318,6 +318,6 @@ def start_boxed_code(boxed_code: list, name: str) -> None:
     :param name: Name of instance
     :type name: str
     """
-    vm = BoxedVM()
+    RS = BoxedRS()
     print(Back.BLUE + Fore.GREEN + "RUNNING " + name + Style.RESET_ALL)
-    run_boxed_code(vm, boxed_code)
+    run_boxed_code(RS, boxed_code)
