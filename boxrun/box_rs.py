@@ -128,11 +128,6 @@ def test(left: str, right: str, op: str) -> bool:
                 return True
             else:
                 return False
-        case "<=":
-            if float(left) <= float(right):
-                return True
-            else:
-                return False
     return False
 
 
@@ -219,9 +214,9 @@ def handle_command(RS: BoxedRS, command: dict) -> None:
             case "wait" | "wt":
                 time.sleep(float(get_arg(0, args, boxes)))
             case "mark" | "mk":
-                marks = marks | {get_arg(0, args, boxes): line_index}
+                marks = marks + [{get_arg(0, args, boxes): line_index}]
             case "premark":
-                marks = marks | {get_arg(0, args, boxes): line_index}
+                marks = marks + [{get_arg(0, args, boxes): line_index}]
             case "jump" | "j":
                 if get_arg(1, args, boxes) == "m":
                     l = marks[get_arg(0, args, boxes)]
@@ -230,8 +225,8 @@ def handle_command(RS: BoxedRS, command: dict) -> None:
             case "if" | "i":
                 run = test(
                     get_arg(0, args, boxes),
-                    get_arg(2, args, boxes),
                     get_arg(1, args, boxes),
+                    get_arg(2, args, boxes),
                 )
                 if run == True:
                     cm_torn = get_arg(3, args, boxes) + " "
@@ -244,8 +239,8 @@ def handle_command(RS: BoxedRS, command: dict) -> None:
             case "jumpif" | "ji":
                 jump = test(
                     get_arg(0, args, boxes),
-                    get_arg(2, args, boxes),
                     get_arg(1, args, boxes),
+                    get_arg(2, args, boxes),
                 )
                 if jump == True:
                     if get_arg(4, args, boxes) == "m":
