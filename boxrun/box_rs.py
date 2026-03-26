@@ -10,7 +10,7 @@ from colorama import Fore, Back, Style
 import time
 import threading
 import queue
-from box_to_json import mk, undo_mk
+from .box_to_json import mk, undo_mk
 
 
 boxes = {}
@@ -19,9 +19,9 @@ line_index = -1
 
 
 class BoxedRS:
-    def __init__(self, inbox=queue.Queue(), outbox=queue.Queue()):
-        self.inbox = inbox
-        self.outbox = outbox
+    def __init__(self, inbox=None, outbox=None):
+        self.inbox = inbox if inbox is not None else queue.Queue()
+        self.outbox = outbox if outbox is not None else queue.Queue()
 
     def start(self, code: str, name: str):
         """
@@ -59,8 +59,9 @@ class BoxedRS:
 
     def _run(self, code, name):
         print("run")
-        start_boxed_code(code, name)
-        self._RS_send({"end": "script"})
+        print(Back.BLUE + Fore.GREEN + "RUNNING " + name + Style.RESET_ALL)
+        run_boxed_code(self, code)
+        self._RS_send({"cmd": "end"})
 
 
 def get_arg(argnumb, args, boxes):
@@ -182,16 +183,13 @@ def handle_command(RS: BoxedRS, command: dict) -> None:
                 }
             case "say" | "s":
                 RS._RS_send(
-                    {
-                        "say": get_arg(0, args, boxes),
-                        "time": get_arg(1, args, boxes)
-                    }
+                    {"cmd": "say", "say": get_arg(0, args, boxes), "time": get_arg(1, args, boxes)}
                 )
             case "ask" | "a":
                 temp = get_arg(0, args, boxes).split(" ")
-                RS._RS_send({"ask": get_arg(0, args, boxes)})
+                RS._RS_send({"cmd": "ask", "ask": get_arg(0, args, boxes)})
                 boxes = boxes | ({
-                    temp[len(temp) - 1]: "fill here with bs" + " : "
+                    temp[len(temp) - 1]: RS._RS_recv() + " : "
                 })
             case "del" | "d":
                 del boxes[get_arg(0, args, boxes)]
@@ -255,7 +253,7 @@ def handle_command(RS: BoxedRS, command: dict) -> None:
                     else:
                         l = int(get_arg(3, args, boxes))
             case "end" | "e":
-                exit()
+                self._RS_send({"cmd": "end"})
             case "weigh" | "wh":
                 boxes = boxes | {
                     get_arg(1, args, boxes): str(len(str(get_arg(0, args, boxes))))
@@ -307,17 +305,3 @@ def run_boxed_code(RS: BoxedRS, boxed_code: list) -> None:
         line_index += 1
         cur_line = boxed_code[line_index]
         handle_command(RS, cur_line)
-
-
-def start_boxed_code(boxed_code: list, name: str) -> None:
-    """
-    Public function to run boxedLANG code
-    
-    :param boxed_code: Program to run
-    :type boxed_code: list
-    :param name: Name of instance
-    :type name: str
-    """
-    RS = BoxedRS()
-    print(Back.BLUE + Fore.GREEN + "RUNNING " + name + Style.RESET_ALL)
-    run_boxed_code(RS, boxed_code)
