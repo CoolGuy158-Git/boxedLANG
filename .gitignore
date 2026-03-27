@@ -5,3 +5,4 @@ IDE/interpreter/__pycache__
 build
 boxrun/boxedrun.egg-info
 boxrun/boxedlang.egg-info
+boxcode/calc.bx
