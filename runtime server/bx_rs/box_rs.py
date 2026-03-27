@@ -59,7 +59,6 @@ class BoxedRS:
         return self.inbox.get()
 
     def _run(self, code, name):
-        print("run")
         print(Back.BLUE + Fore.GREEN + "RUNNING " + name + Style.RESET_ALL)
         run_boxed_code(self, code)
         self._RS_send({"cmd": "end"})
@@ -223,11 +222,7 @@ def handle_command(RS: BoxedRS, command: dict) -> None:
                 else:
                     l = int(get_arg(0, args, boxes)) - 1
             case "if" | "i":
-                run = test(
-                    get_arg(0, args, boxes),
-                    get_arg(1, args, boxes),
-                    get_arg(2, args, boxes),
-                )
+                run = test(get_arg(0, args, boxes), get_arg(1, args, boxes), get_arg(2, args, boxes))
                 if run == True:
                     cm_torn = get_arg(3, args, boxes) + " "
                     i = 3
@@ -260,9 +255,7 @@ def handle_command(RS: BoxedRS, command: dict) -> None:
                     boxes = boxes | {arg1: "1"}
                 else:
                     val = str(int(boxes[arg1] + 1))
-                    print(val)
                     boxes = boxes | {arg1: val}
-                    print(boxes)
     except Exception as e:
         print(
             Back.RED 
