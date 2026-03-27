@@ -14,17 +14,17 @@ boxedLANG is a lightweight scripting language made by jamie designed for educati
 
 - Python 3.10 or higher
 
-### Setup for the runtime server
-
+### linux/mac
+run the install.sh file
 ```sh
-git clone https://github.com/mc20000-01/boxedLANG.git
-cd "boxedLANG/runtime server"
-pip install -e .
+chmod install.sh
+install.sh
 ```
-## After that cd back out to where you did the clone from and run
+
+### windows
+run the install.bat file
 ```sh
-cd "boxedLANG/boxrun"
-pip install -e .
+install.bat
 ```
 
 ## Usage
