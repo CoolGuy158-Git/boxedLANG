@@ -3,3 +3,5 @@ boxrun.egg-info
 bx_rs.egg-info
 IDE/interpreter/__pycache__
 build
+boxrun/boxedrun.egg-info
+boxrun/boxedlang.egg-info
